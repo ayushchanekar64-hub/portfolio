@@ -140,11 +140,12 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem 5vw;
+  padding: 10rem 5vw 5rem; /* Increased top padding to 10rem */
   position: relative;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   gap: 40px;
   margin-bottom: 2rem;
+  margin-top: 100px; /* Add margin to account for fixed header */
 }
 
 .hero::after {
