@@ -30,9 +30,33 @@ const mobileToggle = document.querySelector('.mobile-nav-toggle');
 const topNav = document.querySelector('.top-nav');
 
 if (mobileToggle && topNav) {
+  const closeMenu = () => {
+    topNav.classList.remove('open');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+  };
+
   mobileToggle.addEventListener('click', () => {
     const isOpen = topNav.classList.toggle('open');
     mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Close menu when a link is clicked
+  topNav.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', () => closeMenu());
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!topNav.classList.contains('open')) return;
+    const target = e.target;
+    if (!(target instanceof Node)) return;
+    if (topNav.contains(target) || mobileToggle.contains(target)) return;
+    closeMenu();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
   });
 }
 
@@ -74,3 +98,23 @@ sections.forEach(section => {
   revealObserver.observe(section);
   activeSectionObserver.observe(section);
 });
+
+// Footer year
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+// Scroll-to-top button
+const toTopButton = document.querySelector('.to-top');
+if (toTopButton) {
+  const onScroll = () => {
+    const show = window.scrollY > 600;
+    toTopButton.classList.toggle('show', show);
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  toTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  });
+}
